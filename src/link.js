@@ -1,4 +1,3 @@
-const path = require('path');
 const log = require('npmlog');
 const async = require('async');
 
