@@ -118,30 +118,6 @@ describe('link', () => {
     });
   });
 
-  it('should remove duplicated assets before copying them', (done) => {
-    const copyAssets = sinon.stub();
-    const dependencyAssets = ['Fonts/FontB.ttf'];
-    const projectAssets = ['Fonts/FontB.ttf', 'Fonts/FontA.ttf'];
-
-    mock(
-      '../src/ios/copyAssets.js',
-      copyAssets
-    );
-
-    const config = {
-      getProjectConfig: () => ({ ios: {}, assets: projectAssets }),
-      getDependencyConfig: sinon.stub().returns({ assets: dependencyAssets, commands: {} }),
-    };
-
-    const link = require('../src/link');
-
-    link(config, ['react-native-blur'], () => {
-      expect(copyAssets.calledOnce).to.be.true;
-      expect(copyAssets.getCall(0).args[0]).to.deep.equals(projectAssets);
-      done();
-    });
-  });
-
   afterEach(() => {
     mock.stopAll();
   });
