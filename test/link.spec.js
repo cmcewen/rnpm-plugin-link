@@ -15,20 +15,14 @@ describe('link', () => {
     delete require.cache[require.resolve('../src/link')];
   });
 
-  // that test suite has to be changed in next PR so we have
-  // fixed behaviour for `getProjectConfig` that's already in master
-  it('should return when run in a folder without package.json', () => {
-    const spy = sinon.spy(log, 'error');
-
+  it('should reject when run in a folder without package.json', (done) => {
     const config = {
       getProjectConfig: () => {
         throw new Error('No package.json found');
       },
     };
 
-    link(config);
-
-    expect(spy.calledWith('ERRPACKAGEJSON')).to.be.true;
+    link(config).catch(() => done());
   });
 
   it('should accept a name of a dependency to link', (done) => {
