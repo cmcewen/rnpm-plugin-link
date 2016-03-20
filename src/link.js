@@ -7,14 +7,11 @@ const copyAssetsAndroid = require('./android/copyAssets');
 const copyAssetsIOS = require('./ios/copyAssets');
 const getProjectDependencies = require('./getProjectDependencies');
 const dedupeAssets = require('./dedupeAssets');
+const promisify = require('./promisify');
 
 log.heading = 'rnpm-link';
 
 const commandStub = (cb) => cb();
-
-const promisify = (func) => () => new Promise((resolve, reject) =>
-  func((err, res) => err ? reject(err) : resolve(res))
-);
 
 const linkDependency = (project, dependency) => {
   if (project.android && dependency.config.android) {
