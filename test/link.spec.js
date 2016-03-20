@@ -46,33 +46,29 @@ describe('link', () => {
   });
 
   it('should read dependencies from package.json when name not provided', (done) => {
+    const getProjectDependencies = sinon.stub().returns([]);
     const config = {
-      getProjectConfig: () => ({ assets: [] }),
-      getDependencyConfig: sinon.stub().returns({ assets: [], commands: {} }),
+      getProjectConfig: () => ({ android: {}, ios: {}, assets: [] }),
     };
 
     mock(
-      path.join(process.cwd(), 'package.json'),
-      {
-        dependencies: {
-          'react-native-test': '*',
-        },
-      }
+      '../src/getProjectDependencies.js',
+      getProjectDependencies
     );
 
+    const link = require('../src/link');
+
     link(config, []).then(() => {
-      expect(
-        config.getDependencyConfig.calledWith('react-native-test')
-      ).to.be.true;
+      expect(getProjectDependencies.calledOnce).to.be.true;
       done();
-    });
+    }).catch(err => console.log(err.stack));
   });
 
   it('should register native module when android/ios projects are present', () => {
     const registerNativeModule = sinon.stub();
     const config = {
       getProjectConfig: () => ({ android: {}, ios: {}, assets: [] }),
-      getDependencyConfig: sinon.stub().returns({ android: {}, ios: {}, assets: [], commands: {} }),
+      getDependencyConfig: () => ({ android: {}, ios: {}, assets: [], commands: {} }),
     };
 
     mock(
