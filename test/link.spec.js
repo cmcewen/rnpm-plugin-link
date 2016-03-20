@@ -61,7 +61,7 @@ describe('link', () => {
     link(config, []).then(() => {
       expect(getProjectDependencies.calledOnce).to.be.true;
       done();
-    }).catch(err => console.log(err.stack));
+    });
   });
 
   it('should register native module when android/ios projects are present', () => {
