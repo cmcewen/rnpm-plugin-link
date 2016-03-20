@@ -10,18 +10,10 @@ describe('uniq', () => {
   });
 
   it('should return unique array by a given id', () => {
-    const baseArray = [
-      { name: 'FontB.ttf'},
-      { name: 'FontB.ttf' },
-      { name: 'FontC.ttf' },
-    ];
+    const baseArray = ['FontB.ttf', 'FontC.ttf', 'FontC.ttf'];
+    const getId = item => item.replace('Font', '');
 
-    const getId = item => item.name;
-
-    expect(uniq(baseArray, getId)).to.deep.equals([
-      { name: 'FontB.ttf' },
-      { name: 'FontC.ttf' },
-    ]);
+    expect(uniq(baseArray)).to.deep.equals(['FontB.ttf', 'FontC.ttf']);
   });
 
 });
