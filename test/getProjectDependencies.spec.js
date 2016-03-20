@@ -6,11 +6,22 @@ const path = require('path');
 
 describe('getProjectDependencies', () => {
 
-  it.skip('should return project dependencies without `react-native`', () => {
-    const baseArray = ['FontB.ttf', 'FontC.ttf', 'FontD.ttf'];
-    const toExcludeArray = ['FontC.ttf', 'FontD.ttf'];
+  it('should return an array of project dependencies', () => {
+    mock(
+      path.join(process.cwd(), './package.json'),
+      { dependencies: { lodash: '^6.0.0', 'react-native': '^16.0.0' } }
+    );
 
-    expect(diff(baseArray, toExcludeArray)).to.deep.equals(['FontB.ttf']);
+    expect(getProjectDependencies()).to.deep.equals(['lodash']);
+  });
+
+  it('should return an empty array when no dependencies set', () => {
+    mock(path.join(process.cwd(), './package.json'), {});
+    expect(getProjectDependencies()).to.deep.equals([]);
+  });
+
+  afterEach(() => {
+    mock.stopAll();
   });
 
 });
