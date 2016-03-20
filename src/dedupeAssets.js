@@ -1,9 +1,16 @@
 const path = require('path');
-const uniq = require('lodash.uniq');
 
 /**
  * Returns unique array of assets by its name
  */
 module.exports = function dedupeAssets(assets) {
-  return uniq(assets, asset => path.basename(asset));
+  return assets.reduce(
+    (acc, asset) => {
+      const filename = path.basename(asset);
+      return acc.ids.indexOf(filename) >= 0
+        ? acc
+        : { list: acc.list.concat(asset), ids: acc.ids.concat(filename) };
+    },
+    { list: [], ids: [] }
+  ).list;
 };
